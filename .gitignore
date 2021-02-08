@@ -2,7 +2,6 @@
 /.gradle/
 /.idea/
 /build/
-/gradle/
 
 # Settings
 /src/main/resources/application.yml
