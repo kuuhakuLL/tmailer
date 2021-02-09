@@ -3,5 +3,3 @@
 /.idea/
 /build/
 
-# Settings
-/src/main/resources/application.yml
