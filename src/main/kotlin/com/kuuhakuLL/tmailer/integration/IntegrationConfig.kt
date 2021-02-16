@@ -53,7 +53,8 @@ class IntegrationConfig {
             }
             .handle { payload: Message<MimeMessage>, _: MessageHeaders? -> payload}
             .filter<MimeMessage>{ payload ->
-                payload.subject?.toString() == "Report" || payload.subject?.toString() == "Error"
+                val subject = payload.subject?.toString()?.toLowerCase()
+                subject == "report" || subject == "error"
             }
             .handle(massageReceive, "receive")
             .handle { payload: Message<MimeMessage> ->

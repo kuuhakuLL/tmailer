@@ -8,9 +8,6 @@ import javax.mail.internet.MimeBodyPart
 import javax.mail.*
 import java.util.ArrayList
 
-
-
-
 @Service
 class MassageReceiver {
     @Autowired
@@ -21,8 +18,8 @@ class MassageReceiver {
 
     fun receive(message: Message) {
         try {
-            when (message.subject.toString()) {
-                "Report" -> {
+            when (message.subject.toString().toLowerCase()) {
+                "report" -> {
                     val multiPart = message.content as Multipart
                     for (partIndex in 0 until multiPart.count) {
                         val part = multiPart.getBodyPart(partIndex) as MimeBodyPart
@@ -32,10 +29,9 @@ class MassageReceiver {
                         reportChatId?.forEach {reportBot?.sendReport(chatId = it, report = report)}
                     }
                 }
-                "Error" -> {}
+                "error" -> {}
             }
             message.setFlag(Flags.Flag.SEEN, true)
-        }catch (e: Exception){
-        }
+        }catch (e: Exception){}
     }
 }
