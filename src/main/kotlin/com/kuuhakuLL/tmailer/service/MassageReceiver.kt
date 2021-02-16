@@ -24,7 +24,7 @@ class MassageReceiver {
                     for (partIndex in 0 until multiPart.count) {
                         val part = multiPart.getBodyPart(partIndex) as MimeBodyPart
                         if (!part.contentType.contains("xlsx"))
-                            break
+                            continue
                         val report = InputFile(part.inputStream, part.fileName)
                         reportChatId?.forEach {reportBot?.sendReport(chatId = it, report = report)}
                     }
