@@ -1,6 +1,9 @@
 package com.kuuhakuLL.tmailer.integration
 
-import com.kuuhakuLL.tmailer.service.MassageReceiver
+import com.kuuhakuLL.tmailer.service.MessageReceiver
+import lombok.extern.slf4j.Slf4j
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -18,9 +21,12 @@ import javax.mail.internet.MimeMessage
 import org.springframework.integration.StaticMessageHeaderAccessor
 
 @Configuration
+@Slf4j
 class IntegrationConfig {
+    val logger: Logger = LoggerFactory.getLogger(IntegrationConfig::class.java)
+
     @Autowired
-    private val massageReceive: MassageReceiver? = null
+    private val messageReceive: MessageReceiver? = null
 
     @Value("\${mail.port}")
     private val port: Int? = null
@@ -33,6 +39,7 @@ class IntegrationConfig {
 
     @Bean
     fun mailListener(): IntegrationFlow? {
+        logger.info("Mail listen")
         return IntegrationFlows
             .from(
                 Mail.imapInboundAdapter(
@@ -56,7 +63,7 @@ class IntegrationConfig {
                 val subject = payload.subject?.toString()?.toLowerCase()
                 subject == "report" || subject == "error"
             }
-            .handle(massageReceive, "receive")
+            .handle(messageReceive, "receive")
             .handle { payload: Message<MimeMessage> ->
                 StaticMessageHeaderAccessor.getCloseableResource(payload)?.close()
             }
