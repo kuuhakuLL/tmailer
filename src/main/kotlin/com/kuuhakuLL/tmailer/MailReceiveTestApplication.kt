@@ -3,7 +3,6 @@ package com.kuuhakuLL.tmailer
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
-
 @SpringBootApplication
 class MailReceiveTestApplication
 

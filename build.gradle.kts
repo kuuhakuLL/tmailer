@@ -28,7 +28,8 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	//Logs
-	implementation("commons-logging:commons-logging:1.2")
+	implementation("org.projectlombok:lombok:1.18.16")
+	implementation("org.projectlombok:lombok:1.18.16")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
