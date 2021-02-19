@@ -9,7 +9,7 @@ plugins {
 
 group = "com.kuuhakuLL"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.sourceCompatibility = JavaVersion.VERSION_15
 
 repositories {
 	mavenCentral()
@@ -21,7 +21,7 @@ repositories {
 dependencies {
 	//Spring Framework
 	implementation("org.springframework.boot:spring-boot-starter-mail")
-	implementation("org.springframework.integration:spring-integration-mail:5.4.3")
+	implementation("org.springframework.integration:spring-integration-mail:5.4.4")
 	//Telegram
 	implementation("org.telegram:telegrambots-spring-boot-starter:5.0.1")
 	//Kotlin
@@ -36,7 +36,7 @@ dependencies {
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
-		jvmTarget = "1.8"
+		jvmTarget = "15"
 	}
 }
 

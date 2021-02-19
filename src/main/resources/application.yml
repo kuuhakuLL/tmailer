@@ -1,0 +1,10 @@
+telegram:
+  name: "accident_prevention_test_bot"
+  token: "1618498046:AAE_I5dhma1PT3yNWEdrmMdOYv5s0cmzYM4"
+chats:
+  report: -384332349
+mail:
+  host: imap.yandex.ru
+  port: 993
+  email: kuuhakuLL@yandex.ru
+  password: kuuhaku535LL874

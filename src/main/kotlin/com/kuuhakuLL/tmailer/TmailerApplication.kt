@@ -4,8 +4,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class MailReceiveTestApplication
-
-fun main(args: Array<String>) {
-	runApplication<MailReceiveTestApplication>(*args)
+class TmailerApplication{
+	companion object {
+		@JvmStatic
+		fun main(args: Array<String>) {
+			runApplication<TmailerApplication>(*args)
+		}
+	}
 }
+
