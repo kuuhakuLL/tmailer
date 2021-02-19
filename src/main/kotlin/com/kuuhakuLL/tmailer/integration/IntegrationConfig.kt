@@ -7,12 +7,9 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.integration.dsl.*
 import org.springframework.integration.mail.dsl.Mail
-import org.springframework.integration.support.PropertiesBuilder
 import org.springframework.integration.dsl.IntegrationFlows
 import org.springframework.integration.dsl.IntegrationFlow
-import org.springframework.messaging.MessageHeaders
 import java.net.URLEncoder
 import java.nio.charset.Charset
 import org.springframework.beans.factory.annotation.Autowired
@@ -42,23 +39,17 @@ class IntegrationConfig {
         logger.info("Mail listen")
         return IntegrationFlows
             .from(
-                Mail.imapInboundAdapter(
-                "imaps://${URLEncoder.encode(email, Charset.defaultCharset())}:"
-                    +"${URLEncoder.encode(password, Charset.defaultCharset())}@imap.yandex.ru:$port/inbox"
-                )
-                .searchTermStrategy(SearchUnreadMessagesStrategy())
-                .shouldMarkMessagesAsRead(false)
-                .shouldDeleteMessages(false)
-                .autoCloseFolder(false)
-                .javaMailProperties { p: PropertiesBuilder ->
-                    p.put("mail.debug", "false")
-                    p.put("mail.imaps.ssl.trust", "*")
-                }
+                Mail.imapInboundAdapter(imapUrl())
+                    .searchTermStrategy(SearchUnreadMessagesStrategy())
+                    .shouldMarkMessagesAsRead(false)
+                    .shouldDeleteMessages(false)
+                    .autoCloseFolder(false)
+                    .javaMailProperties { p ->
+                        p.put("mail.imaps.timeout", "300000")
+                        p.put("mail.debug", "false")
+                    }
             )
-            { e: SourcePollingChannelAdapterSpec ->
-                e.autoStartup(true).poller { p -> p.fixedDelay(1000) }
-            }
-            .handle { payload: Message<MimeMessage>, _: MessageHeaders? -> payload}
+            { e -> e.autoStartup(true).poller { p -> p.fixedDelay(5000).maxMessagesPerPoll(1) } }
             .filter<MimeMessage>{ payload ->
                 val subject = payload.subject?.toString()?.toLowerCase()
                 subject == "report" || subject == "error"
@@ -69,4 +60,11 @@ class IntegrationConfig {
             }
             .get()
     }
+
+    private fun imapUrl() : String {
+        val url ="imaps://${URLEncoder.encode(email, Charset.defaultCharset())}:" +
+                "${URLEncoder.encode(password, Charset.defaultCharset())}@imap.yandex.ru:$port/inbox"
+        return url
+    }
+
 }
