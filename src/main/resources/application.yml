@@ -3,6 +3,7 @@ telegram:
   token: "1618498046:AAE_I5dhma1PT3yNWEdrmMdOYv5s0cmzYM4"
 chats:
   report: -384332349
+  error: 865101950
 mail:
   host: imap.yandex.ru
   port: 993

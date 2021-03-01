@@ -37,8 +37,7 @@ class IntegrationConfig {
     @Bean
     fun mailListener(): IntegrationFlow? {
         logger.info("Mail listen")
-        return IntegrationFlows
-            .from(
+        return IntegrationFlows.from(
                 Mail.imapInboundAdapter(imapUrl())
                     .searchTermStrategy(SearchUnreadMessagesStrategy())
                     .shouldMarkMessagesAsRead(false)
@@ -49,7 +48,9 @@ class IntegrationConfig {
                         p.put("mail.debug", "false")
                     }
             )
-            { e -> e.autoStartup(true).poller { p -> p.fixedDelay(5000).maxMessagesPerPoll(1) } }
+            { e ->
+                e.autoStartup(true)
+                    .poller { p -> p.fixedDelay(5000).maxMessagesPerPoll(1) } }
             .filter<MimeMessage>{ payload ->
                 val subject = payload.subject?.toString()?.toLowerCase()
                 subject == "report" || subject == "error"

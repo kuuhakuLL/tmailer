@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.InputFile
 import org.telegram.telegrambots.meta.api.objects.Update
 
@@ -22,13 +21,15 @@ class ReportBot: TelegramLongPollingBot() {
     @Value("\${telegram.token}")
     private val token: String? = null
 
-    fun sendReport(chatId: Int?, report: InputFile){
+    fun sendFile(chatId: Int?, report: InputFile){
         logger.info("Send message telegram chat:$chatId ${report.attachName}")
         val document = SendDocument(chatId.toString(), report)
         execute(document)
     }
 
-    override fun onUpdateReceived(update: Update) {}
+    override fun onUpdateReceived(update: Update) {
+        println(update.message.chatId)
+    }
 
     override fun getBotUsername() = botName
 
